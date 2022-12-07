@@ -8,7 +8,7 @@
   },
   "rules": {
     "linebreak-style": "off",
-    "semi": "off",
+    "semi": ["error", "never"],
     "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/strict-boolean-expressions": "off",
     "unused-imports/no-unused-imports": "error",
