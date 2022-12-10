@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, Client, Collection, SlashCommandBuilder } from 'discord.js'
+import { ChatInputCommandInteraction, Client, Collection, GuildMember, SlashCommandBuilder, User } from 'discord.js'
 
 interface DefaultEvent {
   name: string
@@ -15,13 +15,17 @@ export interface CustomClient extends Client {
 
 export interface DefaultCommand {
   data: SlashCommandBuilder
-  execute: (interaction: CustomInteraction) => void
+  execute: (
+    interaction: CustomInteraction,
+    botInfo?: User,
+    user?: GuildMember
+  ) => void
 }
 
 export interface Command {
   default: DefaultCommand
 }
 
-export interface CustomInteraction extends ChatInputCommandInteraction<'raw'> {
+export interface CustomInteraction extends ChatInputCommandInteraction<'cached'> {
   client: CustomClient
 }
