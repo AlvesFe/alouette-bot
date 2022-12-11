@@ -9,6 +9,7 @@ export interface EmbedBody {
   thumbnail?: string
   fields?: EmbedField[]
   footer?: EmbedFooter
+  url?: string
 }
 
 export interface EmbedField {

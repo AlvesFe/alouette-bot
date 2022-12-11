@@ -8,6 +8,7 @@ import {
 } from 'discord.js'
 import * as fs from 'fs'
 import { Command, CustomClient, Event } from '../types/discord'
+import ServerService from './server.service'
 
 class DiscordService {
   private readonly client: CustomClient
@@ -41,6 +42,7 @@ class DiscordService {
   }
 
   getEvents(): void {
+    const serversInfo = new ServerService()
     const eventFiles = fs
       .readdirSync('./src/events')
       .filter(
@@ -54,7 +56,7 @@ class DiscordService {
       if (event.default.once) {
         this.client.once(event.default.name, (...args) => event.default.execute(...args))
       } else {
-        this.client.on(event.default.name, (...args) => event.default.execute(...args))
+        this.client.on(event.default.name, (...args) => event.default.execute(...args, serversInfo))
       }
     }
   }

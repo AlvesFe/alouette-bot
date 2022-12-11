@@ -1,4 +1,5 @@
-import { ChatInputCommandInteraction, Client, Collection, GuildMember, SlashCommandBuilder, User } from 'discord.js'
+import { ChatInputCommandInteraction, Client, Collection, GuildMember, SlashCommandBuilder } from 'discord.js'
+import ServerService from '../services/server.service'
 
 interface DefaultEvent {
   name: string
@@ -17,8 +18,8 @@ export interface DefaultCommand {
   data: SlashCommandBuilder
   execute: (
     interaction: CustomInteraction,
-    botInfo?: User,
-    user?: GuildMember
+    user?: GuildMember,
+    serversInfo?: ServerService
   ) => void
 }
 

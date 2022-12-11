@@ -1,6 +1,9 @@
-import { GuildMember, SlashCommandBuilder, User } from 'discord.js'
+import { ColorResolvable, GuildMember, SlashCommandBuilder } from 'discord.js'
+import embedFactory from '../factory/embeds'
+import ServerService from '../services/server.service'
 import ytbService from '../services/ytb.service'
 import { CustomInteraction } from '../types/discord'
+import { EmbedField } from '../types/embed'
 
 export default {
   data: new SlashCommandBuilder()
@@ -14,8 +17,8 @@ export default {
     ),
   async execute(
     interaction: CustomInteraction,
-    botInfo: User,
-    user: GuildMember
+    user: GuildMember,
+    serversInfo: ServerService
   ) {
     const voiceChannel = user.voice.channel
     if (!voiceChannel) {
@@ -42,9 +45,61 @@ export default {
     }
 
     if (searchResult.type === 'playlist') {
-      // tratamento de playlist
+      searchResult.playlist.forEach(video => {
+        serversInfo.addSong(interaction.guild.id, {
+          user,
+          videoInfo: video
+        })
+      })
+      const playlistFields: EmbedField[] = []
+      const loopLength = searchResult.playlist.length > 5 ? 5 : searchResult.playlist.length
+      for (let i = 0; i < loopLength; i++) {
+        playlistFields.push({
+          name: searchResult.playlist[i].title,
+          value: `\` ${i + 1} \` - ${searchResult.playlist[i].author.name}`
+        })
+      }
+
+      loopLength > 5 && playlistFields.push({
+        name: `...e mais ${searchResult.playlist.length - loopLength} músicas!`,
+        value: '\u200b'
+      })
+
+      const playlistEmbed = embedFactory({
+        title: 'Playlist adicionada à fila',
+        description: `**${searchResult.playlist.length}** músicas adicionadas à fila`,
+        botAvatar: serversInfo.getServerInfo(interaction.guild.id).bot.avatarURL(),
+        botName: serversInfo.getServerInfo(interaction.guild.id).bot.username,
+        color: process.env.BOT_COLOR as ColorResolvable,
+        fields: playlistFields
+      })
+
+      return await interaction.reply({
+        embeds: [playlistEmbed]
+      })
     }
 
-    // tratamento de música
+    serversInfo.addSong(interaction.guild.id, {
+      user,
+      videoInfo: searchResult.video
+    })
+
+    const songEmbed = embedFactory({
+      title: searchResult.video.title,
+      description: 'Musica adicionada à fila!',
+      botAvatar: serversInfo.getServerInfo(interaction.guild.id).bot.avatarURL(),
+      botName: serversInfo.getServerInfo(interaction.guild.id).bot.username,
+      color: process.env.BOT_COLOR as ColorResolvable,
+      thumbnail: searchResult.video.thumbnail,
+      url: searchResult.video.url,
+      footer: {
+        text: `${user.displayName}`,
+        iconUrl: user.user.avatarURL()
+      }
+    })
+
+    return await interaction.reply({
+      embeds: [songEmbed]
+    })
   }
 }

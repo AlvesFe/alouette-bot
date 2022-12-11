@@ -1,6 +1,6 @@
 import * as yts from 'yt-search'
 import ytdl = require('ytdl-core')
-import { SearchResults } from '../types/ytb'
+import { SearchResults, PlaylistItem } from '../types/ytb'
 
 class YtbService {
   async search(query: string): Promise<SearchResults> {
@@ -36,10 +36,13 @@ class YtbService {
     return await this.getVideo({ videoId })
   }
 
-  async getPlaylist(playlistId: string): Promise<yts.VideoMetadataResult[]> {
-    const { videos } = await yts.search({ listId: playlistId })
-    const playlist = videos.map(video => this.getVideo({ videoId: video.videoId }))
-    return await Promise.all(playlist)
+  async getPlaylist(playlistId: string): Promise<PlaylistItem[]> {
+    const playlist = await yts.search({ listId: playlistId })
+    return playlist.videos.map((video, index) => ({
+      ...video,
+      url: `https://www.youtube.com/watch?v=${video.videoId}`,
+      description: `Música ${index + 1} da playlist ${playlist.title}`
+    }))
   }
 
   async getAudioStream(url: string): Promise<any> {

@@ -1,7 +1,7 @@
 import { EmbedBuilder } from 'discord.js'
 import { EmbedBody } from '../types/embed'
 
-const embedFactory = async (body: EmbedBody): Promise<EmbedBuilder> => {
+const embedFactory = (body: EmbedBody): EmbedBuilder => {
   const embed = new EmbedBuilder()
     .setTimestamp()
     .setTitle(body.title)
@@ -10,7 +10,7 @@ const embedFactory = async (body: EmbedBody): Promise<EmbedBuilder> => {
       name: body.botName,
       iconURL: body.botAvatar
     })
-
+  if (body.url) embed.setURL(body.url)
   if (body.description) embed.setDescription(body.description)
   if (body.thumbnail) embed.setThumbnail(body.thumbnail)
   if (body.fields) embed.addFields(body.fields)
