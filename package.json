@@ -4,6 +4,9 @@
   "main": "dist/index.js",
   "license": "MIT",
   "type": "commonjs",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "scripts": {
     "build": "tsc",
     "prestart": "yarn run build",
