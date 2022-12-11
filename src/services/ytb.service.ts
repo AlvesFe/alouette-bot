@@ -49,8 +49,8 @@ class YtbService {
     return ytdl(url, {
       filter: 'audioonly',
       highWaterMark: 1048576 * 32
-    }).on('error', (error: Error) => {
-      console.error(error)
+    }).on('error', (e) => {
+      console.error(e)
     })
   }
 }

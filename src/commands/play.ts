@@ -1,5 +1,7 @@
 import { ColorResolvable, GuildMember, SlashCommandBuilder } from 'discord.js'
+import { getVoiceConnection } from '@discordjs/voice'
 import embedFactory from '../factory/embeds'
+import AudioService from '../services/audio.service'
 import ServerService from '../services/server.service'
 import ytbService from '../services/ytb.service'
 import { CustomInteraction } from '../types/discord'
@@ -21,6 +23,7 @@ export default {
     serversInfo: ServerService
   ) {
     const voiceChannel = user.voice.channel
+    const textChannel = interaction.channel
     if (!voiceChannel) {
       return await interaction.reply({
         content: 'Você precisa estar em um canal de voz para executar este comando!',
@@ -43,6 +46,8 @@ export default {
         ephemeral: true
       })
     }
+
+    let audioPlayer: AudioService
 
     if (searchResult.type === 'playlist') {
       searchResult.playlist.forEach(video => {
@@ -74,6 +79,16 @@ export default {
         fields: playlistFields
       })
 
+      if (!getVoiceConnection(interaction.guild.id)) {
+        audioPlayer = new AudioService(textChannel, serversInfo)
+        audioPlayer.joinChannel({
+          channelId: voiceChannel.id,
+          guildId: interaction.guild.id,
+          adapterCreator: interaction.guild.voiceAdapterCreator
+        })
+        await audioPlayer.play(serversInfo.getQueue(interaction.guild.id)[0])
+      }
+
       return await interaction.reply({
         embeds: [playlistEmbed]
       })
@@ -97,6 +112,16 @@ export default {
         iconUrl: user.user.avatarURL()
       }
     })
+
+    if (!getVoiceConnection(interaction.guild.id)) {
+      audioPlayer = new AudioService(textChannel, serversInfo)
+      audioPlayer.joinChannel({
+        channelId: voiceChannel.id,
+        guildId: interaction.guild.id,
+        adapterCreator: interaction.guild.voiceAdapterCreator
+      })
+      await audioPlayer.play(serversInfo.getQueue(interaction.guild.id)[0])
+    }
 
     return await interaction.reply({
       embeds: [songEmbed]
