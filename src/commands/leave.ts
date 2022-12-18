@@ -24,13 +24,13 @@ export default {
     }
     const leaveEmbed = embedFactory({
       title: 'Desconectado',
-      botAvatar: server.getServerInfo(interaction.guildId).bot.avatarURL(),
-      botName: server.getServerInfo(interaction.guildId).bot.username,
+      botAvatar: server.getServerInfo(interaction.guildId)?.bot.avatarURL() || '',
+      botName: server.getServerInfo(interaction.guildId)?.bot.username || 'Bot',
       description: 'Saindo do canal de voz',
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {
         text: user.user.username,
-        iconUrl: user.user.avatarURL()
+        iconUrl: user.user.avatarURL() || ''
       }
     })
 

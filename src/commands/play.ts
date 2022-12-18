@@ -1,4 +1,4 @@
-import { ColorResolvable, GuildMember, SlashCommandBuilder } from 'discord.js'
+import { ColorResolvable, GuildMember, GuildTextBasedChannel, SlashCommandBuilder } from 'discord.js'
 import { getVoiceConnection } from '@discordjs/voice'
 import embedFactory from '../factory/embeds'
 import AudioService from '../services/audio.service'
@@ -24,6 +24,7 @@ export default {
   ) {
     const voiceChannel = user.voice.channel
     const textChannel = interaction.channel
+    const serverInfo = serversInfo.getServerInfo(interaction.guild.id)
     if (!voiceChannel) {
       return await interaction.reply({
         content: 'Você precisa estar em um canal de voz para executar este comando!',
@@ -49,38 +50,39 @@ export default {
 
     let audioPlayer: AudioService
 
-    if (searchResult.type === 'playlist') {
-      searchResult.playlist.forEach(video => {
+    if (searchResult.type === 'playlist' && searchResult.playlist) {
+      const playlist = searchResult.playlist
+      playlist.forEach(video => {
         serversInfo.addSong(interaction.guild.id, {
           user,
           videoInfo: video
         })
       })
       const playlistFields: EmbedField[] = []
-      const loopLength = searchResult.playlist.length > 5 ? 5 : searchResult.playlist.length
+      const loopLength = (playlist.length > 5 ? 5 : playlist.length) || 0
       for (let i = 0; i < loopLength; i++) {
         playlistFields.push({
-          name: searchResult.playlist[i].title,
-          value: `\` ${i + 1} \` - ${searchResult.playlist[i].author.name}`
+          name: playlist[i]?.title,
+          value: `\` ${i + 1} \` - ${playlist[i].author.name}`
         })
       }
 
       loopLength > 5 && playlistFields.push({
-        name: `...e mais ${searchResult.playlist.length - loopLength} músicas!`,
+        name: `...e mais ${playlist.length - loopLength} músicas!`,
         value: '\u200b'
       })
 
       const playlistEmbed = embedFactory({
         title: 'Playlist adicionada à fila',
-        description: `**${searchResult.playlist.length}** músicas adicionadas à fila`,
-        botAvatar: serversInfo.getServerInfo(interaction.guild.id).bot.avatarURL(),
-        botName: serversInfo.getServerInfo(interaction.guild.id).bot.username,
+        description: `**${playlist.length}** músicas adicionadas à fila`,
+        botAvatar: serverInfo?.bot.avatarURL() || '',
+        botName: serverInfo?.bot.username || 'Bot',
         color: process.env.BOT_COLOR as ColorResolvable,
         fields: playlistFields
       })
 
       if (!getVoiceConnection(interaction.guild.id)) {
-        audioPlayer = new AudioService(textChannel, serversInfo)
+        audioPlayer = new AudioService(textChannel as GuildTextBasedChannel, serversInfo)
         audioPlayer.joinChannel({
           channelId: voiceChannel.id,
           guildId: interaction.guild.id,
@@ -94,6 +96,13 @@ export default {
       })
     }
 
+    if (!searchResult.video) {
+      return await interaction.reply({
+        content: 'Não foi possível encontrar a música informada!',
+        ephemeral: true
+      })
+    }
+
     serversInfo.addSong(interaction.guild.id, {
       user,
       videoInfo: searchResult.video
@@ -102,19 +111,19 @@ export default {
     const songEmbed = embedFactory({
       title: searchResult.video.title,
       description: 'Musica adicionada à fila!',
-      botAvatar: serversInfo.getServerInfo(interaction.guild.id).bot.avatarURL(),
-      botName: serversInfo.getServerInfo(interaction.guild.id).bot.username,
+      botAvatar: serverInfo?.bot.avatarURL() || '',
+      botName: serverInfo?.bot.username || 'Bot',
       color: process.env.BOT_COLOR as ColorResolvable,
       thumbnail: searchResult.video.thumbnail,
       url: searchResult.video.url,
       footer: {
         text: `${user.displayName}`,
-        iconUrl: user.user.avatarURL()
+        iconUrl: user.user.avatarURL() || ''
       }
     })
 
     if (!getVoiceConnection(interaction.guild.id)) {
-      audioPlayer = new AudioService(textChannel, serversInfo)
+      audioPlayer = new AudioService(textChannel as GuildTextBasedChannel, serversInfo)
       audioPlayer.joinChannel({
         channelId: voiceChannel.id,
         guildId: interaction.guild.id,

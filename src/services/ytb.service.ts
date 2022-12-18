@@ -7,6 +7,7 @@ class YtbService {
     try {
       const url = new URL(query)
       const videoId = url.searchParams.get('v')
+      if (!videoId) throw new Error('Invalid URL')
       const playlistId = url.searchParams.get('list')
       if (playlistId) {
         return {
@@ -19,6 +20,7 @@ class YtbService {
         type: 'video'
       }
     } catch {
+      console.error('Failed to parse URL, searching for video...')
       return {
         video: await this.getVideo({ query }),
         type: 'video'
@@ -30,6 +32,9 @@ class YtbService {
     if (videoId) {
       const video = await yts.search({ videoId })
       return video
+    }
+    if (!query) {
+      throw new Error('No query or videoId provided.')
     }
 
     videoId = (await yts.search({ query })).videos[0].videoId

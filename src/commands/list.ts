@@ -20,6 +20,7 @@ export default {
       })
     }
 
+    const serverInfo = serversInfo.getServerInfo(interaction.guild.id)
     const queue = serversInfo.getQueue(interaction.guild.id)
     const queueFields: EmbedField[] = []
     const loopLength = queue.length > 25 ? 25 : queue.length
@@ -32,8 +33,8 @@ export default {
 
     const queueEmbed = embedFactory({
       title: 'Fila de músicas',
-      botAvatar: serversInfo.getServerInfo(interaction.guild.id).bot.avatarURL(),
-      botName: serversInfo.getServerInfo(interaction.guild.id).bot.username,
+      botAvatar: serverInfo?.bot.avatarURL() || '',
+      botName: serverInfo?.bot.username || 'Bot',
       fields: queueFields,
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {

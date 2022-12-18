@@ -10,7 +10,7 @@ export interface Event {
   default: DefaultEvent
 }
 
-export interface CustomClient extends Client {
+export interface CustomClient extends Client<true> {
   commands?: Collection<string, any>
 }
 

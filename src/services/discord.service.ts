@@ -10,11 +10,12 @@ import * as fs from 'fs'
 import { Command, CustomClient, Event } from '../types/discord'
 import ServerService from './server.service'
 
+const { TOKEN, CLIENT_ID, GUILD_ID, NODE_ENV } = process.env
 class DiscordService {
   private readonly client: CustomClient
 
   constructor() {
-    this.client = new Client({
+    this.client = new Client<true>({
       intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildVoiceStates
@@ -61,11 +62,18 @@ class DiscordService {
     }
   }
 
-  async login(token: string): Promise<string> {
-    return await this.client.login(token)
+  async login(): Promise<string> {
+    if (!TOKEN) {
+      throw new Error('No token provided.')
+    }
+    return await this.client.login(TOKEN)
   }
 
   async registerCommands(): Promise<void> {
+    if (!TOKEN) throw new Error('No token provided.')
+    if (!GUILD_ID) throw new Error('No guild id provided.')
+    if (!CLIENT_ID) throw new Error('No client id provided.')
+
     const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = []
     const commandFiles = fs
       .readdirSync('./src/commands')
@@ -74,7 +82,7 @@ class DiscordService {
       )
       .map(file => file.split('.')[0])
 
-    const rest = new REST({ version: '10' }).setToken(process.env.TOKEN)
+    const rest = new REST({ version: '10' }).setToken(TOKEN)
 
     for (const file of commandFiles) {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -82,19 +90,19 @@ class DiscordService {
       commands.push(command.default.data.toJSON())
     }
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (NODE_ENV !== 'production') {
       await rest.put(
-        Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+        Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID),
         { body: commands }
       )
-      return console.log('Successfully registered local application commands.')
+      return console.info('Successfully registered local application commands.')
     }
 
     await rest.put(
-      Routes.applicationCommands(process.env.CLIENT_ID),
+      Routes.applicationCommands(CLIENT_ID),
       { body: commands }
     )
-    console.log('Successfully registered global application commands.')
+    console.info('Successfully registered global application commands.')
   }
 }
 

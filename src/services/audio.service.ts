@@ -67,10 +67,12 @@ class AudioService {
   }
 
   private createInactiveEmbed(server: ServerService, channel: GuildTextBasedChannel): EmbedBuilder {
+    const botAvatar = server?.getServerInfo(channel.guildId)?.bot.avatarURL() || ''
+    const botName = server?.getServerInfo(channel.guildId)?.bot.username || ''
     return embedFactory({
       title: 'Desconectado',
-      botAvatar: server.getServerInfo(channel.guildId).bot.avatarURL(),
-      botName: server.getServerInfo(channel.guildId).bot.username,
+      botAvatar,
+      botName,
       description: 'Saindo do canal de voz por inatividade',
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {
@@ -80,10 +82,12 @@ class AudioService {
   }
 
   private createPlayingEmbed(server: ServerService, channel: GuildTextBasedChannel, music: Music): EmbedBuilder {
+    const botAvatar = server?.getServerInfo(channel.guildId)?.bot.avatarURL() || ''
+    const botName = server?.getServerInfo(channel.guildId)?.bot.username || ''
     return embedFactory({
       title: 'Tocando música',
-      botAvatar: server.getServerInfo(channel.guildId).bot.avatarURL(),
-      botName: server.getServerInfo(channel.guildId).bot.username,
+      botAvatar,
+      botName,
       description: `**${music.videoInfo.title}**`,
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {

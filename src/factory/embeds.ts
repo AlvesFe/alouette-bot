@@ -17,7 +17,7 @@ const embedFactory = (body: EmbedBody): EmbedBuilder => {
   if (body.footer) {
     embed.setFooter({
       text: body.footer.text,
-      iconURL: body.footer.iconUrl
+      iconURL: body.footer.iconUrl || undefined
     })
   }
 
