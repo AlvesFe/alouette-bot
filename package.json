@@ -16,7 +16,6 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.11",
-    "@types/yt-search": "^2.3.2",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.29.0",
@@ -35,6 +34,7 @@
   },
   "dependencies": {
     "@discordjs/voice": "^0.14.0",
+    "@types/yt-search": "^2.3.2",
     "discord-api-types": "^0.37.21",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
