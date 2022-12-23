@@ -9,5 +9,6 @@
     "strict": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "node_modules/**"]
+  "exclude": ["node_modules", "dist", "node_modules/**"],
+  "excludeTypes": ["types/node", "types/yt-search"]
 }
