@@ -67,7 +67,7 @@ export default {
         })
       }
 
-      loopLength > 5 && playlistFields.push({
+      playlist.length > 5 && playlistFields.push({
         name: `...e mais ${playlist.length - loopLength} músicas!`,
         value: '\u200b'
       })
