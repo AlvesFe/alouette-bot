@@ -6,8 +6,6 @@ class YtbService {
   async search(query: string): Promise<SearchResults> {
     try {
       const url = new URL(query)
-      const videoId = url.searchParams.get('v')
-      if (!videoId) throw new Error('Invalid URL')
       const playlistId = url.searchParams.get('list')
       if (playlistId) {
         return {
@@ -15,6 +13,8 @@ class YtbService {
           type: 'playlist'
         }
       }
+      const videoId = url.searchParams.get('v')
+      if (!videoId) throw new Error('Invalid URL')
       return {
         video: await this.getVideo({ videoId }),
         type: 'video'
