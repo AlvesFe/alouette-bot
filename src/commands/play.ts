@@ -3,9 +3,9 @@ import { getVoiceConnection } from '@discordjs/voice'
 import embedFactory from '../factory/embeds'
 import AudioService from '../services/audio.service'
 import ServerService from '../services/server.service'
-import ytbService from '../services/ytb.service'
 import { CustomInteraction } from '../types/discord'
 import { EmbedField } from '../types/embed'
+import searchService from '../services/search.service'
 
 export default {
   data: new SlashCommandBuilder()
@@ -40,7 +40,7 @@ export default {
       })
     }
 
-    const searchResult = await ytbService.search(music)
+    const searchResult = await searchService.search(music)
     if (!searchResult) {
       return await interaction.reply({
         content: 'Não foi possível encontrar a música informada!',
