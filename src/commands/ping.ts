@@ -18,13 +18,13 @@ export default {
     }
     const embed = embedFactory({
       title: 'Pong!',
-      botName: botInfo.username || 'Bot',
-      botAvatar: botInfo.avatarURL() || '',
+      botName: botInfo.username,
+      botAvatar: botInfo.avatarURL(),
       color: process.env.BOT_COLOR as ColorResolvable,
       description: `Latência da API: ${interaction.client.ws.ping}ms`,
       footer: {
         text: `Comando executado por ${user.displayName || user.user.username}`,
-        iconUrl: user.user.avatarURL() || ''
+        iconUrl: user.user.avatarURL()
       }
     })
     return await interaction.reply({ embeds: [embed] })

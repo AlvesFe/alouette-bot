@@ -33,8 +33,8 @@ export default {
 
     const queueEmbed = embedFactory({
       title: 'Fila de músicas',
-      botAvatar: serverInfo?.bot.avatarURL() || '',
-      botName: serverInfo?.bot.username || 'Bot',
+      botAvatar: serverInfo?.bot.avatarURL(),
+      botName: serverInfo?.bot.username,
       fields: queueFields,
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {

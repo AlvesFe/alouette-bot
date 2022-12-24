@@ -7,8 +7,8 @@ const embedFactory = (body: EmbedBody): EmbedBuilder => {
     .setTitle(body.title)
     .setColor(body.color || 'Random')
     .setAuthor({
-      name: body.botName,
-      iconURL: body.botAvatar
+      name: body.botName || 'Bot',
+      iconURL: body.botAvatar || undefined
     })
   if (body.url) embed.setURL(body.url)
   if (body.description) embed.setDescription(body.description)

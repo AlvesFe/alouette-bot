@@ -75,8 +75,8 @@ export default {
       const playlistEmbed = embedFactory({
         title: 'Playlist adicionada à fila',
         description: `**${playlist.length}** músicas adicionadas à fila`,
-        botAvatar: serverInfo?.bot.avatarURL() || '',
-        botName: serverInfo?.bot.username || 'Bot',
+        botAvatar: serverInfo?.bot.avatarURL(),
+        botName: serverInfo?.bot.username,
         color: process.env.BOT_COLOR as ColorResolvable,
         fields: playlistFields
       })
@@ -111,14 +111,14 @@ export default {
     const songEmbed = embedFactory({
       title: searchResult.video.title,
       description: 'Musica adicionada à fila!',
-      botAvatar: serverInfo?.bot.avatarURL() || '',
-      botName: serverInfo?.bot.username || 'Bot',
+      botAvatar: serverInfo?.bot.avatarURL(),
+      botName: serverInfo?.bot.username,
       color: process.env.BOT_COLOR as ColorResolvable,
       thumbnail: searchResult.video.thumbnail,
       url: searchResult.video.url,
       footer: {
         text: `${user.displayName}`,
-        iconUrl: user.user.avatarURL() || ''
+        iconUrl: user.user.avatarURL()
       }
     })
 

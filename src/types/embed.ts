@@ -3,8 +3,8 @@ import { ColorResolvable } from 'discord.js'
 export interface EmbedBody {
   title: string
   color: ColorResolvable
-  botName: string
-  botAvatar: string
+  botName?: string | null
+  botAvatar?: string | null
   description?: string
   thumbnail?: string
   fields?: EmbedField[]
@@ -19,5 +19,5 @@ export interface EmbedField {
 
 export interface EmbedFooter {
   text: string
-  iconUrl?: string
+  iconUrl?: string | null
 }
