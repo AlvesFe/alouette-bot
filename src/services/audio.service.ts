@@ -67,8 +67,8 @@ class AudioService {
   }
 
   private createInactiveEmbed(server: ServerService, channel: GuildTextBasedChannel): EmbedBuilder {
-    const botAvatar = server?.getServerInfo(channel.guildId)?.bot.avatarURL() || ''
-    const botName = server?.getServerInfo(channel.guildId)?.bot.username || ''
+    const botAvatar = server?.getServerInfo(channel.guildId)?.bot.avatarURL()
+    const botName = server?.getServerInfo(channel.guildId)?.bot.username
     return embedFactory({
       title: 'Desconectado',
       botAvatar,
@@ -82,8 +82,8 @@ class AudioService {
   }
 
   private createPlayingEmbed(server: ServerService, channel: GuildTextBasedChannel, music: Music): EmbedBuilder {
-    const botAvatar = server?.getServerInfo(channel.guildId)?.bot.avatarURL() || ''
-    const botName = server?.getServerInfo(channel.guildId)?.bot.username || ''
+    const botAvatar = server?.getServerInfo(channel.guildId)?.bot.avatarURL()
+    const botName = server?.getServerInfo(channel.guildId)?.bot.username
     return embedFactory({
       title: 'Tocando música',
       botAvatar,

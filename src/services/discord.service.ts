@@ -26,6 +26,7 @@ class DiscordService {
   }
 
   getCommands(): void {
+    console.info('Loading commands...')
     const commandFiles = fs
       .readdirSync('./src/commands')
       .filter(
@@ -43,6 +44,7 @@ class DiscordService {
   }
 
   getEvents(): void {
+    console.info('Loading events...')
     const serversInfo = new ServerService()
     const eventFiles = fs
       .readdirSync('./src/events')
@@ -73,6 +75,7 @@ class DiscordService {
     if (!TOKEN) throw new Error('No token provided.')
     if (!GUILD_ID) throw new Error('No guild id provided.')
     if (!CLIENT_ID) throw new Error('No client id provided.')
+    console.log('Registering commands...')
 
     const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = []
     const commandFiles = fs

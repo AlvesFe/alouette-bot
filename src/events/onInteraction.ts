@@ -21,7 +21,7 @@ export default {
     } catch (error) {
       console.error(error)
       return await interaction.reply({
-        content: 'There was an error while executing this command!',
+        content: 'Houve um problema ao executar esse comando.',
         ephemeral: true
       })
     }
