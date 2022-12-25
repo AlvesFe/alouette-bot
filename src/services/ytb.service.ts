@@ -2,7 +2,7 @@ import internal = require('stream')
 import ytdl = require('ytdl-core')
 import ytpl = require('ytpl')
 import ytsr = require('ytsr')
-import { SearchResults } from '../types/ytb'
+import { SearchResults, SearchType } from '../types/ytb'
 import parseUrl from '../util/parseUrl'
 
 class YtbService {
@@ -12,13 +12,13 @@ class YtbService {
     if (playlistId) {
       return {
         playlist: await this.getPlaylist(playlistId),
-        type: 'playlist'
+        type: SearchType.Playlist
       }
     }
     const videoId = url?.searchParams.get('v')
     return {
       video: await this.getVideo(videoId || query),
-      type: 'video'
+      type: SearchType.Video
     }
   }
 

@@ -4,7 +4,12 @@ import ytsr = require('ytsr')
 export interface SearchResults {
   video?: ytsr.Video
   playlist?: PlaylistItem[]
-  type: 'video' | 'playlist'
+  type: SearchType
 }
 
-export interface PlaylistItem extends ytpl.Item {}
+export type PlaylistItem = ytpl.Item
+
+export enum SearchType {
+  Video = 'video',
+  Playlist = 'playlist'
+}

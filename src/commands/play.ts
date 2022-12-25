@@ -6,6 +6,7 @@ import ServerService from '../services/server.service'
 import ytbService from '../services/ytb.service'
 import { CustomInteraction } from '../types/discord'
 import { EmbedField } from '../types/embed'
+import { SearchType } from '../types/ytb'
 
 export default {
   data: new SlashCommandBuilder()
@@ -50,7 +51,7 @@ export default {
 
     let audioPlayer: AudioService
 
-    if (searchResult.type === 'playlist' && searchResult.playlist) {
+    if (searchResult.type === SearchType.Playlist && searchResult.playlist) {
       const playlist = searchResult.playlist
       playlist.forEach(video => {
         serversInfo.addSong(interaction.guild.id, {
