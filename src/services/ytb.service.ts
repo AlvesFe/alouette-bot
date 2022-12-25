@@ -6,27 +6,19 @@ import { SearchResults } from '../types/ytb'
 
 class YtbService {
   async search(query: string): Promise<SearchResults> {
-    try {
-      const url = new URL(query)
-      const playlistId = url.searchParams.get('list')
-      if (playlistId) {
-        return {
-          playlist: await this.getPlaylist(playlistId),
-          type: 'playlist'
-        }
-      }
-      const videoId = url.searchParams.get('v')
-      if (!videoId) throw new Error('Invalid URL')
+    const url = new URL(query)
+    const playlistId = url.searchParams.get('list')
+    if (playlistId) {
       return {
-        video: await this.getVideo(videoId),
-        type: 'video'
+        playlist: await this.getPlaylist(playlistId),
+        type: 'playlist'
       }
-    } catch {
-      console.error('Failed to parse URL, searching for video...')
-      return {
-        video: await this.getVideo(query),
-        type: 'video'
-      }
+    }
+    const videoId = url.searchParams.get('v')
+
+    return {
+      video: await this.getVideo(videoId || query),
+      type: 'video'
     }
   }
 
