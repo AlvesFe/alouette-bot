@@ -3,19 +3,19 @@ import ytdl = require('ytdl-core')
 import ytpl = require('ytpl')
 import ytsr = require('ytsr')
 import { SearchResults } from '../types/ytb'
+import parseUrl from '../util/parseUrl'
 
 class YtbService {
   async search(query: string): Promise<SearchResults> {
-    const url = new URL(query)
-    const playlistId = url.searchParams.get('list')
+    const url = parseUrl(query)
+    const playlistId = url?.searchParams.get('list')
     if (playlistId) {
       return {
         playlist: await this.getPlaylist(playlistId),
         type: 'playlist'
       }
     }
-    const videoId = url.searchParams.get('v')
-
+    const videoId = url?.searchParams.get('v')
     return {
       video: await this.getVideo(videoId || query),
       type: 'video'
