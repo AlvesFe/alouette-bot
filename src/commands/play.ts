@@ -114,7 +114,7 @@ export default {
       botAvatar: serverInfo?.bot.avatarURL(),
       botName: serverInfo?.bot.username,
       color: process.env.BOT_COLOR as ColorResolvable,
-      thumbnail: searchResult.video.thumbnail,
+      thumbnail: searchResult.video?.thumbnails[0].url || null,
       url: searchResult.video.url,
       footer: {
         text: `${user.displayName}`,

@@ -101,11 +101,11 @@ class AudioService {
       footer: {
         text: 'Tocando'
       },
-      thumbnail: music.videoInfo.thumbnail,
+      thumbnail: music.videoInfo.thumbnails[0].url,
       fields: [
         {
           name: 'Autor',
-          value: music.videoInfo.author.name
+          value: music.videoInfo.author?.name || 'Desconhecido'
         }
       ]
     })

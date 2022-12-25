@@ -6,7 +6,7 @@ export interface EmbedBody {
   botName?: string | null
   botAvatar?: string | null
   description?: string
-  thumbnail?: string
+  thumbnail?: string | null
   fields?: EmbedField[]
   footer?: EmbedFooter
   url?: string

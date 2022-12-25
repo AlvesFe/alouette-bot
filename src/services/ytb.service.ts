@@ -1,6 +1,8 @@
-import * as yts from 'yt-search'
+import internal = require('stream')
 import ytdl = require('ytdl-core')
-import { SearchResults, PlaylistItem } from '../types/ytb'
+import ytpl = require('ytpl')
+import ytsr = require('ytsr')
+import { SearchResults } from '../types/ytb'
 
 class YtbService {
   async search(query: string): Promise<SearchResults> {
@@ -16,47 +18,36 @@ class YtbService {
       const videoId = url.searchParams.get('v')
       if (!videoId) throw new Error('Invalid URL')
       return {
-        video: await this.getVideo({ videoId }),
+        video: await this.getVideo(videoId),
         type: 'video'
       }
     } catch {
       console.error('Failed to parse URL, searching for video...')
       return {
-        video: await this.getVideo({ query }),
+        video: await this.getVideo(query),
         type: 'video'
       }
     }
   }
 
-  async getVideo({ query, videoId }: { query?: string; videoId?: string }): Promise<yts.VideoMetadataResult> {
-    if (videoId) {
-      const video = await yts.search({ videoId })
-      return video
-    }
-    if (!query) {
-      throw new Error('No query or videoId provided.')
-    }
-
-    videoId = (await yts.search({ query })).videos[0].videoId
-    return await this.getVideo({ videoId })
+  async getVideo(query: string): Promise<ytsr.Video> {
+    const filters = (await ytsr.getFilters(query))
+      .get('Type')?.get('Video')?.url
+    if (!filters) throw new Error('No video found')
+    const search = await ytsr(filters, { limit: 1 })
+    return search.items[0] as ytsr.Video
   }
 
-  async getPlaylist(playlistId: string): Promise<PlaylistItem[]> {
-    const playlist = await yts.search({ listId: playlistId })
-    return playlist.videos.map((video, index) => ({
-      ...video,
-      url: `https://www.youtube.com/watch?v=${video.videoId}`,
-      description: `Música ${index + 1} da playlist ${playlist.title}`
-    }))
+  async getPlaylist(playlistId: string): Promise<ytpl.Item[]> {
+    const playlist = await ytpl(playlistId)
+    return playlist.items
   }
 
-  async getAudioStream(url: string): Promise<any> {
+  async getAudioStream(url: string): Promise<internal.Readable> {
     return ytdl(url, {
       filter: 'audioonly',
       highWaterMark: 1048576 * 32
-    }).on('error', (e) => {
-      console.error(e)
-    })
+    }).on('error', console.error)
   }
 }
 
