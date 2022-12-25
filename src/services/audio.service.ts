@@ -10,7 +10,8 @@ import {
   AudioPlayer,
   VoiceConnection,
   AudioPlayerStatus,
-  createAudioResource
+  createAudioResource,
+  VoiceConnectionStatus
 } from '@discordjs/voice'
 
 class AudioService {
@@ -20,6 +21,7 @@ class AudioService {
   constructor(channel: GuildTextBasedChannel, server: ServerService) {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.player.on(AudioPlayerStatus.Idle, async () => await this.handleIdle(server, channel))
+    this.player.on(AudioPlayerStatus.AutoPaused, () => this.handleDisconnect(server, channel))
   }
 
   joinChannel({
@@ -38,6 +40,12 @@ class AudioService {
   leaveChannel(): void {
     this.player?.stop()
     this.connection?.destroy()
+  }
+
+  handleDisconnect(server: ServerService, channel: GuildTextBasedChannel): void {
+    if (this.connection?.state.status !== VoiceConnectionStatus.Disconnected) return
+    this.leaveChannel()
+    server.clearQueue(channel.guildId)
   }
 
   async play(music: Music): Promise<void> {
