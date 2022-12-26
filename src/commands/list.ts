@@ -38,7 +38,8 @@ export default {
       fields: queueFields,
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {
-        text: user.user.username
+        text: user.displayName,
+        iconUrl: user.avatarURL()
       }
     })
 

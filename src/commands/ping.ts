@@ -23,8 +23,8 @@ export default {
       color: process.env.BOT_COLOR as ColorResolvable,
       description: `Latência da API: ${interaction.client.ws.ping}ms`,
       footer: {
-        text: `Comando executado por ${user.displayName || user.user.username}`,
-        iconUrl: user.user.avatarURL()
+        text: `Comando executado por ${user.displayName}`,
+        iconUrl: user.avatarURL()
       }
     })
     return await interaction.reply({ embeds: [embed] })

@@ -37,8 +37,8 @@ export default {
       description: 'Saindo do canal de voz',
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {
-        text: user.user.username,
-        iconUrl: user.user.avatarURL()
+        text: user.displayName,
+        iconUrl: user.avatarURL()
       }
     })
 
