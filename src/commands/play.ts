@@ -6,6 +6,7 @@ import ServerService from '../services/server.service'
 import { CustomInteraction } from '../types/discord'
 import { EmbedField } from '../types/embed'
 import searchService from '../services/search.service'
+import { SearchType } from '../types/ytb'
 
 export default {
   data: new SlashCommandBuilder()
@@ -50,7 +51,7 @@ export default {
 
     let audioPlayer: AudioService
 
-    if (searchResult.type === 'playlist' && searchResult.playlist) {
+    if (searchResult.type === SearchType.Playlist && searchResult.playlist) {
       const playlist = searchResult.playlist
       playlist.forEach(video => {
         serversInfo.addSong(interaction.guild.id, {
@@ -78,7 +79,11 @@ export default {
         botAvatar: serverInfo?.bot.avatarURL(),
         botName: serverInfo?.bot.username,
         color: process.env.BOT_COLOR as ColorResolvable,
-        fields: playlistFields
+        fields: playlistFields,
+        footer: {
+          text: user.displayName,
+          iconUrl: user.user.avatarURL()
+        }
       })
 
       if (!getVoiceConnection(interaction.guild.id)) {
@@ -114,7 +119,7 @@ export default {
       botAvatar: serverInfo?.bot.avatarURL(),
       botName: serverInfo?.bot.username,
       color: process.env.BOT_COLOR as ColorResolvable,
-      thumbnail: searchResult.video.thumbnail,
+      thumbnail: searchResult.video?.thumbnails[0].url || null,
       url: searchResult.video.url,
       footer: {
         text: `${user.displayName}`,

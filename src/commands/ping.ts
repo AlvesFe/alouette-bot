@@ -23,7 +23,7 @@ export default {
       color: process.env.BOT_COLOR as ColorResolvable,
       description: `Latência da API: ${interaction.client.ws.ping}ms`,
       footer: {
-        text: `Comando executado por ${user.displayName || user.user.username}`,
+        text: `Comando executado por ${user.displayName}`,
         iconUrl: user.user.avatarURL()
       }
     })

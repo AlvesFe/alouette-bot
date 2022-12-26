@@ -10,7 +10,8 @@ import {
   AudioPlayer,
   VoiceConnection,
   AudioPlayerStatus,
-  createAudioResource
+  createAudioResource,
+  VoiceConnectionStatus
 } from '@discordjs/voice'
 
 class AudioService {
@@ -20,6 +21,7 @@ class AudioService {
   constructor(channel: GuildTextBasedChannel, server: ServerService) {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.player.on(AudioPlayerStatus.Idle, async () => await this.handleIdle(server, channel))
+    this.player.on(AudioPlayerStatus.AutoPaused, () => this.handleDisconnect(server, channel))
   }
 
   joinChannel({
@@ -38,6 +40,12 @@ class AudioService {
   leaveChannel(): void {
     this.player?.stop()
     this.connection?.destroy()
+  }
+
+  handleDisconnect(server: ServerService, channel: GuildTextBasedChannel): void {
+    if (this.connection?.state.status !== VoiceConnectionStatus.Disconnected) return
+    this.leaveChannel()
+    server.clearQueue(channel.guildId)
   }
 
   async play(music: Music): Promise<void> {
@@ -88,16 +96,16 @@ class AudioService {
       title: 'Tocando música',
       botAvatar,
       botName,
-      description: `**${music.videoInfo.title}**`,
+      description: `**[${music.videoInfo.title}](${music.videoInfo.url}})**`,
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {
         text: 'Tocando'
       },
-      thumbnail: music.videoInfo.thumbnail,
+      thumbnail: music.videoInfo.thumbnails[0].url,
       fields: [
         {
           name: 'Autor',
-          value: music.videoInfo.author.name
+          value: music.videoInfo.author?.name || 'Desconhecido'
         }
       ]
     })

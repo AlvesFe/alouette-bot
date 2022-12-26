@@ -27,7 +27,7 @@ export default {
     for (let i = 0; i < loopLength; i++) {
       queueFields.push({
         name: `#${i + 1} - ${queue[i].videoInfo.title}`,
-        value: `**Autor:** ${queue[i].videoInfo.author.name}`
+        value: `**Autor:** ${queue[i].videoInfo.author?.name}`
       })
     }
 
@@ -38,7 +38,8 @@ export default {
       fields: queueFields,
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {
-        text: user.user.username
+        text: user.displayName,
+        iconUrl: user.user.avatarURL()
       }
     })
 

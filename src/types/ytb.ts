@@ -1,12 +1,15 @@
-import yts = require('yt-search')
+import ytpl = require('ytpl')
+import ytsr = require('ytsr')
 
 export interface SearchResults {
-  video?: yts.VideoMetadataResult
+  video?: ytsr.Video
   playlist?: PlaylistItem[]
-  type: 'video' | 'playlist'
+  type: SearchType
 }
 
-export interface PlaylistItem extends yts.PlaylistItem {
-  url: string
-  description: string
+export type PlaylistItem = ytpl.Item
+
+export enum SearchType {
+  Video = 'video',
+  Playlist = 'playlist'
 }
