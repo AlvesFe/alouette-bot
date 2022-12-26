@@ -79,7 +79,11 @@ export default {
         botAvatar: serverInfo?.bot.avatarURL(),
         botName: serverInfo?.bot.username,
         color: process.env.BOT_COLOR as ColorResolvable,
-        fields: playlistFields
+        fields: playlistFields,
+        footer: {
+          text: user.displayName,
+          iconUrl: user.user.avatarURL()
+        }
       })
 
       if (!getVoiceConnection(interaction.guild.id)) {

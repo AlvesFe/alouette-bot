@@ -38,7 +38,7 @@ export default {
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {
         text: user.displayName,
-        iconUrl: user.avatarURL()
+        iconUrl: user.user.avatarURL()
       }
     })
 

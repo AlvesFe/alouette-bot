@@ -24,7 +24,7 @@ export default {
       description: `Latência da API: ${interaction.client.ws.ping}ms`,
       footer: {
         text: `Comando executado por ${user.displayName}`,
-        iconUrl: user.avatarURL()
+        iconUrl: user.user.avatarURL()
       }
     })
     return await interaction.reply({ embeds: [embed] })
