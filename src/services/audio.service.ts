@@ -96,7 +96,7 @@ class AudioService {
       title: 'Tocando música',
       botAvatar,
       botName,
-      description: `**${music.videoInfo.title}**`,
+      description: `**[${music.videoInfo.title}](${music.videoInfo.url}})**`,
       color: process.env.BOT_COLOR as ColorResolvable,
       footer: {
         text: 'Tocando'
