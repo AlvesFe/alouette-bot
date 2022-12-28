@@ -12,7 +12,6 @@ class SpotifyService {
   }
 
   async auth(): Promise<void> {
-    if (!SPOTIFY_CLIENT_ID || !SPOTIFY_SECRET) throw new Error('Spotify credentials not found')
     const data = await this.client.clientCredentialsGrant()
     this.client.setAccessToken(data.body.access_token)
   }
