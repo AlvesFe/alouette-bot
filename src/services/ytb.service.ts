@@ -2,26 +2,8 @@ import internal = require('stream')
 import ytdl = require('ytdl-core')
 import ytpl = require('ytpl')
 import ytsr = require('ytsr')
-import { SearchResults, SearchType } from '../types/ytb'
-import parseUrl from '../util/parseUrl'
 
 class YtbService {
-  async search(query: string): Promise<SearchResults> {
-    const url = parseUrl(query)
-    const playlistId = url?.searchParams.get('list')
-    if (playlistId) {
-      return {
-        playlist: await this.getPlaylist(playlistId),
-        type: SearchType.Playlist
-      }
-    }
-    const videoId = url?.searchParams.get('v')
-    return {
-      video: await this.getVideo(videoId || query),
-      type: SearchType.Video
-    }
-  }
-
   async getVideo(query: string): Promise<ytsr.Video> {
     const filters = (await ytsr.getFilters(query))
       .get('Type')?.get('Video')?.url

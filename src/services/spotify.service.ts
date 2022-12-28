@@ -1,6 +1,4 @@
 import Spotify from 'spotify-web-api-node'
-import { SearchResults } from '../types/ytb'
-import ytbService from './ytb.service'
 const { SPOTIFY_CLIENT_ID, SPOTIFY_SECRET } = process.env
 
 class SpotifyService {
@@ -14,15 +12,14 @@ class SpotifyService {
   }
 
   async auth(): Promise<void> {
+    if (!SPOTIFY_CLIENT_ID || !SPOTIFY_SECRET) throw new Error('Spotify credentials not found')
     const data = await this.client.clientCredentialsGrant()
     this.client.setAccessToken(data.body.access_token)
   }
 
-  async search(query: string): Promise<SearchResults> {
-    const url = new URL(query)
-    const trackId = url.pathname.split('/').pop()
-    const trackInfo = await this.getTrackInfo(trackId as string)
-    return await ytbService.search(`${trackInfo.artists[0].name} ${trackInfo.name}`)
+  async searchTrack(query: string): Promise<SpotifyApi.TrackObjectFull | null> {
+    const data = await this.client.searchTracks(query)
+    return data?.body.tracks?.items[0] || null
   }
 
   async getTrackInfo(trackId: string): Promise<SpotifyApi.TrackObjectFull> {

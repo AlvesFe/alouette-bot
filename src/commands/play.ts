@@ -41,7 +41,7 @@ export default {
       })
     }
 
-    const searchResult = await searchService.search(music)
+    const searchResult = await searchService.search(music).catch(console.error)
     if (!searchResult) {
       return await interaction.reply({
         content: 'Não foi possível encontrar a música informada!',

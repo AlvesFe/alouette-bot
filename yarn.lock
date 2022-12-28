@@ -259,11 +259,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/yt-search@^2.3.2":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@types/yt-search/-/yt-search-2.3.2.tgz#e714e3ccb12300ee605ffa13523f64794b543aaf"
-  integrity sha512-3QZDV7BUFkwEhodTZZWbCm+CeVwnT7tKXj8IT7IXjJpT3mwd54Udti2MJz3HltEFCa9lrqy+r/m1NPIQXegKug==
-
 "@typescript-eslint/eslint-plugin@^5.47.0":
   version "5.47.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.47.0.tgz#dadb79df3b0499699b155839fd6792f16897d910"
@@ -452,78 +447,6 @@ array.prototype.flat@^1.2.5:
     define-properties "^1.1.4"
     es-abstract "^1.20.4"
     es-shim-unscopables "^1.0.0"
-
-async.parallellimit@~0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.parallellimit/-/async.parallellimit-0.5.2.tgz#bfdcbf2f0832f1fff4c0b3354b4f6320663dd51f"
-  integrity sha512-4Di2nFsb3jL7aUIICvRSvtw/oynpMIx0JrwYn5hqJI661Dd+mYBi2ElOukOQgRHihU1SCTapb86Vx/Snva5M1w==
-  dependencies:
-    async.util.eachoflimit "0.5.2"
-    async.util.parallel "0.5.2"
-
-async.util.eachoflimit@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.eachoflimit/-/async.util.eachoflimit-0.5.2.tgz#8b8cb8cfb0278aa5ceb50a8f800c1c2668db57ef"
-  integrity sha512-oZksH0sBW0AEOJKgBCQ79io9DZruoRBLTAea/Ik36pejR7pDpByvtXeuJsoZdPwSVslsrQcsUfucbUaiXYBnAQ==
-  dependencies:
-    async.util.keyiterator "0.5.2"
-    async.util.noop "0.5.2"
-    async.util.once "0.5.2"
-    async.util.onlyonce "0.5.2"
-
-async.util.isarray@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.isarray/-/async.util.isarray-0.5.2.tgz#e62dac8f2636f65875dcf7521c2d24d0dfb2bbdf"
-  integrity sha512-wbUzlrwON8RUgi+v/rhF0U99Ce8Osjcn+JP/mFNg6ymvShcobAOvE6cvLajSY5dPqKCOE1xfdhefgBif11zZgw==
-
-async.util.isarraylike@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.isarraylike/-/async.util.isarraylike-0.5.2.tgz#8e7f87da9141f2f0996e8040477d0d4efe3f50f8"
-  integrity sha512-DbFpsz3ZFNkohAW8IpGTlm8gotU32zpqe3Y2XkEA/G3XNO6rmUTKPpo7XgXUruoI+AsGi8+0zWpJHe7t1sLiAg==
-  dependencies:
-    async.util.isarray "0.5.2"
-
-async.util.keyiterator@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.keyiterator/-/async.util.keyiterator-0.5.2.tgz#339e6ce8f89d000433fb7814e22728f3f175090d"
-  integrity sha512-cktrETawCwgu13y3KZs2uMGFnNHc+IjKPZsavtRaoCjLELkePb2co4zrr+ghPvEqLXZIJPTKqC2HFZgJTssMVw==
-  dependencies:
-    async.util.isarraylike "0.5.2"
-    async.util.keys "0.5.2"
-
-async.util.keys@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.keys/-/async.util.keys-0.5.2.tgz#5c34ddd8a3edb7a7883c9b5fe2126781b2098af6"
-  integrity sha512-umCOCRCRYwIC2Ho3fbuhKwIIe7OhQsVoVKGoF5GoQiGJUmjP4TG0Bmmcdpm7yW/znoIGKpnjKzVQz0niH4tfqw==
-
-async.util.noop@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.noop/-/async.util.noop-0.5.2.tgz#bdd62b97cb0aa3f60b586ad148468698975e58b9"
-  integrity sha512-AdwShXwE0KoskgqVJAck8zcM32nIHj3AC8ZN62ZaR5srhrY235Nw18vOJZWxcOfhxdVM0hRVKM8kMx7lcl7cCQ==
-
-async.util.once@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.once/-/async.util.once-0.5.2.tgz#1453cb7404cad0822694fababc47a96e5caa7216"
-  integrity sha512-YQ5WPzDTt2jlblUDkq2I5RV/KiAJErJ4/0cEFhYPaZzqIuF/xDzdGvnEKe7UeuoMszsVPeajzcpKgkbwdb9MUA==
-
-async.util.onlyonce@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.onlyonce/-/async.util.onlyonce-0.5.2.tgz#b8e6fc004adc923164d79e32f2813ee465c24ff2"
-  integrity sha512-UgQvkU9JZ+I0Cm1f56XyGXcII+J3d/5XWUuHpcevlItuA3WFSJcqZrsyAUck2FkRSD8BwYQX1zUTDp3SJMVESg==
-
-async.util.parallel@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.parallel/-/async.util.parallel-0.5.2.tgz#233524e3d6faffd5e995d75476b8d924f96808cd"
-  integrity sha512-0bEvwmQ8fxsTYNwacw5iq0i3PvGryRkXxZ01Rvox21izdMdls9IH2rAZjfunbgI8j6nFRyIdCmMINQ9kka99ow==
-  dependencies:
-    async.util.isarraylike "0.5.2"
-    async.util.noop "0.5.2"
-    async.util.restparam "0.5.2"
-
-async.util.restparam@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/async.util.restparam/-/async.util.restparam-0.5.2.tgz#03efebf3c0277b97220e525aba750f5e04fc80cd"
-  integrity sha512-Q9Z+zgmtMxFX5i7CnBvNOkgrL5hptztCqwarQluyNudUUk4iCmyjmsQl8MuQEjNh3gGqP5ayvDaextL1VXXgIg==
 
 asynckit@^0.4.0:
   version "0.4.0"
