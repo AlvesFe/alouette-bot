@@ -5,6 +5,8 @@ import parseUrl from '../util/parseUrl'
 import spotifyService from './spotify.service'
 import ytbService from './ytb.service'
 
+const { SPOTIFY_CLIENT_ID, SPOTIFY_SECRET } = process.env
+
 class SearchService {
   async search(query: string): Promise<SearchResults | null> {
     try {
@@ -64,6 +66,9 @@ class SearchService {
   }
 
   defineSearchEngine(url: URL | null): SearchEngine {
+    if (!SPOTIFY_SECRET && !SPOTIFY_CLIENT_ID) {
+      return SearchEngine.YTB
+    }
     if (url?.hostname.includes('youtube')) {
       return SearchEngine.YTB
     }
