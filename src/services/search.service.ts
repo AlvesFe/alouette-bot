@@ -1,3 +1,4 @@
+import errorMetric from '../factory/errorMessage'
 import { SearchEngine } from '../types/search'
 import { SearchResults, SearchType } from '../types/ytb'
 import parseUrl from '../util/parseUrl'
@@ -5,15 +6,27 @@ import spotifyService from './spotify.service'
 import ytbService from './ytb.service'
 
 class SearchService {
-  async search(query: string): Promise<SearchResults> {
-    const url = parseUrl(query)
-    const searchEngine = this.defineSearchEngine(url)
-    switch (searchEngine) {
-      case SearchEngine.SPOTIFY:
-        return await this.searchSpotify(query, url)
-      case SearchEngine.YTB:
-      default:
-        return await this.searchYtb(query, url)
+  async search(query: string): Promise<SearchResults | null> {
+    try {
+      const url = parseUrl(query)
+      const searchEngine = this.defineSearchEngine(url)
+      switch (searchEngine) {
+        case SearchEngine.SPOTIFY:
+          return await this.searchSpotify(query, url)
+        case SearchEngine.YTB:
+        default:
+          return await this.searchYtb(query, url)
+      }
+    } catch (error) {
+      errorMetric({
+        message: 'Error searching music',
+        error,
+        data: {
+          query,
+          timestamp: new Date().toISOString()
+        }
+      })
+      return null
     }
   }
 
