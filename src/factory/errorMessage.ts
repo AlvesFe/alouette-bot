@@ -1,4 +1,4 @@
-import { ErrorFactory } from '../types/error';
+import { ErrorFactory } from '../types/error'
 
 const errorMetric = ({
   message,
