@@ -1,7 +1,7 @@
-import internal = require('stream')
-import ytdl = require('ytdl-core')
-import ytpl = require('ytpl')
-import ytsr = require('ytsr')
+import internal from 'stream'
+import ytdl from 'ytdl-core'
+import ytpl from 'ytpl'
+import ytsr from 'ytsr'
 
 class YtbService {
   async getVideo(query: string): Promise<ytsr.Video> {
