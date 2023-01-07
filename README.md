@@ -27,6 +27,11 @@ TOKEN="SECRET TOKEN DO BOT"
 CLIENT_ID="APPLICATION ID DO BOT"
 GUILD_ID="ID DO SERVIDOR QUE IRA TESTAR"
 BOT_COLOR="COR DO BOT, UTILIZANDO HEXADECIMAL (#FFFFFF)"
+SPOTIFY_CLIENT_ID="ID DO CLIENT DO SPOTIFY"
+SPOTIFY_SECRET="SECRET DO CLIENT DO SPOTIFY"
 ```
 * Execute o comando `yarn start`
   * Se deseja desenvolver funções para o bot, é recomendado usar o comando `yarn dev`
+##### **OBS:** Para conseguir o `TOKEN` e o `CLIENT_ID` do bot, acesse o [Discord Developer Portal](https://discord.com/developers/applications) e crie uma aplicação, após isso crie um bot e copie o token e o client id.
+
+##### **OBS²:** Para conseguir o `SPOTIFY_CLIENT_ID` e o `SPOTIFY_SECRET` do bot, acesse o [Spotify Developer Portal](https://developer.spotify.com/dashboard/) e crie uma aplicação, após isso copie o client id e o secret.
