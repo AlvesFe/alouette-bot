@@ -33,7 +33,9 @@ class SearchService {
   }
 
   async searchYtb(query: string, url: URL | null): Promise<SearchResults> {
-    const videoId = url?.searchParams.get('v')
+    const videoId = url?.hostname === 'youtu.be'
+      ? url.pathname.split('/')[1]
+      : url?.searchParams.get('v')
     const playlistId = url?.searchParams.get('list')
     if (playlistId) {
       return {
@@ -69,16 +71,18 @@ class SearchService {
     if (!SPOTIFY_SECRET && !SPOTIFY_CLIENT_ID) {
       return SearchEngine.YTB
     }
-    if (url?.hostname.includes('youtube')) {
-      return SearchEngine.YTB
+    switch (url?.hostname) {
+      case 'open.spotify.com':
+      case 'play.spotify.com':
+      case 'spotify.com':
+        return SearchEngine.SPOTIFY
+      case 'music.youtube.com':
+      case 'www.youtube.com':
+      case 'youtube.com':
+      case 'youtu.be':
+      default:
+        return SearchEngine.YTB
     }
-    if (url?.hostname.includes('youtu.be')) {
-      return SearchEngine.YTB
-    }
-    if (url?.hostname.includes('spotify')) {
-      return SearchEngine.SPOTIFY
-    }
-    return SearchEngine.YTB
   }
 }
 
