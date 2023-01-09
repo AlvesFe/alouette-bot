@@ -25,6 +25,21 @@ class SpotifyService {
     const track = await this.client.getTrack(trackId)
     return track.body
   }
+
+  async getPlaylistInfo(playlistId: string): Promise<SpotifyApi.PlaylistTrackObject[]> {
+    const playlist = await this.client.getPlaylist(playlistId)
+    return playlist.body.tracks.items
+  }
+
+  async getEpisodeInfo(episodeId: string): Promise<SpotifyApi.EpisodeObjectFull> {
+    const episode = await this.client.getEpisode(episodeId)
+    return episode.body
+  }
+
+  async getAlbumInfo(albumId: string): Promise<SpotifyApi.TrackObjectSimplified[]> {
+    const album = await this.client.getAlbum(albumId)
+    return album.body.tracks.items
+  }
 }
 
 export default new SpotifyService()

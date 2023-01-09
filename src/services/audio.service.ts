@@ -13,6 +13,7 @@ import {
   createAudioResource,
   VoiceConnectionStatus
 } from '@discordjs/voice'
+import { SearchEngine } from '../types/search'
 
 class AudioService {
   player: AudioPlayer = createAudioPlayer()
@@ -48,8 +49,18 @@ class AudioService {
     server.clearQueue(channel.guildId)
   }
 
-  async play(music: Music): Promise<void> {
-    const video = await ytbService.getAudioStream(music.videoInfo.url)
+  async play({ videoInfo }: Music): Promise<void> {
+    if (videoInfo.origin === SearchEngine.SPOTIFY) {
+      const video = await ytbService.getVideo(`${videoInfo.author} ${videoInfo.title}`).catch(() => {
+        console.error(`Audioservice failed to play ${videoInfo.title}, skipping...`)
+        this.player.stop()
+      })
+      if (!video) return
+      if (!videoInfo.thumbnail) videoInfo.thumbnail = video.bestThumbnail.url
+      videoInfo.url = video.url
+    }
+    const url = videoInfo.url
+    const video = await ytbService.getAudioStream(url)
     const audioStream = createAudioResource(video)
     this.player.play(audioStream)
   }
@@ -101,11 +112,11 @@ class AudioService {
       footer: {
         text: 'Tocando'
       },
-      thumbnail: music.videoInfo.thumbnails[0].url,
+      thumbnail: music.videoInfo.thumbnail,
       fields: [
         {
           name: 'Autor',
-          value: music.videoInfo.author?.name || 'Desconhecido'
+          value: music.videoInfo.author || 'Desconhecido'
         }
       ]
     })

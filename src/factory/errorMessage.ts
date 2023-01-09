@@ -13,6 +13,9 @@ const errorMetric = ({
     error,
     data
   }
+  if (!fs.existsSync('./logs')) {
+    fs.mkdirSync('./logs')
+  }
   fs.writeFileSync(
     `./logs/error-${timestamp}.json`,
     JSON.stringify(payload, null, 2)
