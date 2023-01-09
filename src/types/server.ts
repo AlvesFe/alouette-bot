@@ -1,11 +1,11 @@
 import { GuildMember, User } from 'discord.js'
-import { Video } from 'ytsr'
-import { PlaylistItem } from './ytb'
+
+import { VideoItem } from './search'
 
 export type ServerInfo = Record<string, ServerInfoItem>
 
 export interface Music {
-  videoInfo: Video | PlaylistItem
+  videoInfo: VideoItem
   user: GuildMember
 }
 

@@ -20,6 +20,7 @@ class YtbService {
   async getAudioStream(url: string): Promise<internal.Readable> {
     return ytdl(url, {
       filter: 'audioonly',
+      quality: 'highestaudio',
       highWaterMark: 1048576 * 32
     }).on('error', console.error)
   }

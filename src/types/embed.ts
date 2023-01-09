@@ -9,7 +9,7 @@ export interface EmbedBody {
   thumbnail?: string | null
   fields?: EmbedField[]
   footer?: EmbedFooter
-  url?: string
+  url?: string | null
 }
 
 export interface EmbedField {

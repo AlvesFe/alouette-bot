@@ -6,7 +6,7 @@ import ServerService from '../services/server.service'
 import { CustomInteraction } from '../types/discord'
 import { EmbedField } from '../types/embed'
 import searchService from '../services/search.service'
-import { SearchType } from '../types/ytb'
+import { SearchType } from '../types/search'
 
 export default {
   data: new SlashCommandBuilder()
@@ -64,7 +64,7 @@ export default {
       for (let i = 0; i < loopLength; i++) {
         playlistFields.push({
           name: playlist[i]?.title,
-          value: `\` ${i + 1} \` - ${playlist[i].author.name}`
+          value: `\` ${i + 1} \` - ${playlist[i].author}`
         })
       }
 
@@ -119,7 +119,7 @@ export default {
       botAvatar: serverInfo?.bot.avatarURL(),
       botName: serverInfo?.bot.username,
       color: process.env.BOT_COLOR as ColorResolvable,
-      thumbnail: searchResult.video?.thumbnails[0].url || null,
+      thumbnail: searchResult.video.thumbnail || null,
       url: searchResult.video.url,
       footer: {
         text: `${user.displayName}`,
