@@ -118,6 +118,23 @@ class SearchService {
       }
     }
 
+    if (id && type === 'artist') {
+      const artist = await spotifyService.getArtistTracks(id)
+      const musics = artist.map(item => ({
+        id: item.id,
+        title: item.name,
+        url: item.external_urls.spotify,
+        thumbnail: item.album.images[0].url,
+        origin: SearchEngine.SPOTIFY,
+        author: item.artists[0].name
+      })) as VideoItem[]
+
+      return {
+        playlist: musics,
+        type: SearchType.Playlist
+      }
+    }
+
     const trackId = url?.pathname.split('/')[2]
     if (!trackId) throw new Error('Invalid track id')
 

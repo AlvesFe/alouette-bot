@@ -40,6 +40,11 @@ class SpotifyService {
     const album = await this.client.getAlbum(albumId)
     return album.body.tracks.items
   }
+
+  async getArtistTracks(artistId: string): Promise<SpotifyApi.TrackObjectFull[]> {
+    const artist = await this.client.getArtistTopTracks(artistId, 'US')
+    return artist.body.tracks
+  }
 }
 
 export default new SpotifyService()
