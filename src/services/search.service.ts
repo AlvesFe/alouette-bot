@@ -23,8 +23,7 @@ class SearchService {
         message: 'Error searching music',
         error,
         data: {
-          query,
-          timestamp: new Date().toISOString()
+          query
         }
       })
       return null

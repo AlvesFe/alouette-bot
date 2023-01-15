@@ -7,7 +7,13 @@ import { EmbedField } from '../types/embed'
 export default {
   data: new SlashCommandBuilder()
     .setName('list')
-    .setDescription('Lista as músicas da fila'),
+    .setDescription('Lista as músicas da fila')
+    .addNumberOption(option =>
+      option
+        .setName('página')
+        .setDescription('Página da fila a ser exibida')
+        .setRequired(false)
+    ),
   async execute(
     interaction: CustomInteraction,
     user: GuildMember,
@@ -19,24 +25,37 @@ export default {
         ephemeral: true
       })
     }
-
+    let page = interaction.options.getNumber('página') || 1
     const serverInfo = serversInfo.getServerInfo(interaction.guild.id)
     const queue = serversInfo.getQueue(interaction.guild.id)
-    const queueFields: EmbedField[] = []
-    const loopLength = queue.length > 25 ? 25 : queue.length
-    for (let i = 0; i < loopLength; i++) {
-      queueFields.push({
-        name: `#${i + 1} - ${queue[i].videoInfo.title}`,
-        value: `**Autor:** ${queue[i].videoInfo.author}`
-      })
-    }
+    const queueFields = queue.map((song, index) => ({
+      name: `#${index + 1} - ${song.videoInfo.title}`,
+      value: `**Autor:** ${song.videoInfo.author}`,
+      thumbnail: song.videoInfo.thumbnail
+    })) as EmbedField[]
 
+    const queueFieldsPaged = queueFields.reduce<EmbedField[][]>(
+      (acc, field, index) => {
+        const pageIndex = Math.floor(index / 10)
+        if (!acc[pageIndex]) {
+          acc[pageIndex] = []
+        }
+        acc[pageIndex].push(field)
+        return acc
+      }, [])
+
+    const maxPage = queueFieldsPaged.length
+    if (page > maxPage) page = maxPage
+    if (page < 1) page = 1
+    const queriedPage = queueFieldsPaged[page - 1]
     const queueEmbed = embedFactory({
       title: 'Fila de músicas',
+      description: `Página \`${page}\` de \`${queueFieldsPaged.length}\``,
       botAvatar: serverInfo?.bot.avatarURL(),
       botName: serverInfo?.bot.username,
-      fields: queueFields,
+      fields: queriedPage,
       color: process.env.BOT_COLOR as ColorResolvable,
+      thumbnail: queriedPage[0]?.thumbnail,
       footer: {
         text: user.displayName,
         iconUrl: user.user.avatarURL()

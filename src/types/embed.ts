@@ -15,6 +15,7 @@ export interface EmbedBody {
 export interface EmbedField {
   name: string
   value: string
+  thumbnail?: string | null
 }
 
 export interface EmbedFooter {

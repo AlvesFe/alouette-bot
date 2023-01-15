@@ -35,6 +35,14 @@ class ServerService {
   clearQueue(serverId: string): void {
     this.server[serverId].queue = []
   }
+
+  shuffleQueue(serverId: string): void {
+    const queue = this.server[serverId].queue
+    const firstMusic = queue.length > 0 ? queue.shift() : null
+    const newQueue = queue.sort(() => Math.random() - 0.5)
+    if (firstMusic) newQueue.unshift(firstMusic)
+    this.server[serverId].queue = newQueue
+  }
 }
 
 export default ServerService
