@@ -3,7 +3,7 @@ import ServerService from '../services/server.service'
 
 interface DefaultEvent {
   name: string
-  execute: (...args: any) => void
+  execute: (...args: [unknown]) => void
   once?: boolean
 }
 export interface Event {
@@ -11,7 +11,7 @@ export interface Event {
 }
 
 export interface CustomClient extends Client<true> {
-  commands?: Collection<string, any>
+  commands?: Collection<string, unknown>
 }
 
 export interface DefaultCommand {

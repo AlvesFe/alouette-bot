@@ -8,7 +8,7 @@
     "esModuleInterop": true,
     "strict": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", ".eslintrc.js"],
   "exclude": ["node_modules", "dist", "node_modules/**"],
   "excludeTypes": ["types/node", "types/yt-search"]
 }

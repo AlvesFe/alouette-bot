@@ -23,7 +23,7 @@ class AudioService {
   constructor(channel: GuildTextBasedChannel, server: ServerService) {
     this.channel = channel
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    this.player.on(AudioPlayerStatus.Idle, async () => await this.handleIdle(server, channel))
+    this.player.on(AudioPlayerStatus.Idle, async () => this.handleIdle(server, channel))
     this.player.on(AudioPlayerStatus.AutoPaused, () => this.handleDisconnect(server, channel))
   }
 

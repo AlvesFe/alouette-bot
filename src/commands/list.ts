@@ -28,21 +28,17 @@ export default {
     let page = interaction.options.getNumber('página') || 1
     const serverInfo = serversInfo.getServerInfo(interaction.guild.id)
     const queue = serversInfo.getQueue(interaction.guild.id)
-    const queueFields = queue.map((song, index) => ({
-      name: `#${index + 1} - ${song.videoInfo.title}`,
-      value: `**Autor:** ${song.videoInfo.author}`,
-      thumbnail: song.videoInfo.thumbnail
-    })) as EmbedField[]
 
-    const queueFieldsPaged = queueFields.reduce<EmbedField[][]>(
-      (acc, field, index) => {
-        const pageIndex = Math.floor(index / 10)
-        if (!acc[pageIndex]) {
-          acc[pageIndex] = []
-        }
-        acc[pageIndex].push(field)
-        return acc
-      }, [])
+    const queueFieldsPaged = queue.reduce<EmbedField[][]>((acc, field, index) => {
+      const page = Math.floor(index / 10)
+      if (!acc[page]) acc[page] = []
+      acc[page].push({
+        name: `#${index + 1} - ${field.videoInfo.title}`,
+        value: `**Autor:** ${field.videoInfo.author}`,
+        thumbnail: field.videoInfo.thumbnail
+      })
+      return acc
+    }, [])
 
     const maxPage = queueFieldsPaged.length
     if (page > maxPage) page = maxPage
