@@ -3,7 +3,8 @@ import ServerService from '../services/server.service'
 
 interface DefaultEvent {
   name: string
-  execute: (...args: [unknown]) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  execute: (...args: any) => void
   once?: boolean
 }
 export interface Event {

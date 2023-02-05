@@ -68,7 +68,7 @@ class DiscordService {
     if (!TOKEN) {
       throw new Error('No token provided.')
     }
-    return await this.client.login(TOKEN)
+    return this.client.login(TOKEN)
   }
 
   async registerCommands(): Promise<void> {

@@ -20,7 +20,7 @@ export default {
     serversInfo: ServerService
   ) {
     if (serversInfo.getQueue(interaction.guild.id).length === 0) {
-      return await interaction.reply({
+      return interaction.reply({
         content: 'Não há músicas na fila!',
         ephemeral: true
       })
@@ -58,7 +58,7 @@ export default {
       }
     })
 
-    return await interaction.reply({
+    return interaction.reply({
       embeds: [queueEmbed]
     })
   }

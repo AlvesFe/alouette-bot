@@ -28,10 +28,10 @@ export default {
           iconUrl: user.user.avatarURL()
         }
       })
-      return await interaction.reply({ embeds: [embed] })
+      return interaction.reply({ embeds: [embed] })
     } catch (err) {
       console.error(err)
-      return await interaction.reply({
+      return interaction.reply({
         ephemeral: true,
         embeds: [
           embedFactory({

@@ -18,14 +18,14 @@ export default {
     const connection = getVoiceConnection(interaction.guild.id)
 
     if (!voiceChannel) {
-      return await interaction.reply({
+      return interaction.reply({
         content: 'Você precisa estar em um canal de voz para executar este comando!',
         ephemeral: true
       })
     }
 
     if (voiceChannel?.id !== connection?.joinConfig.channelId) {
-      return await interaction.reply({
+      return interaction.reply({
         content: 'Você precisa estar no mesmo canal de voz do bot para executar este comando!',
         ephemeral: true
       })
@@ -44,6 +44,6 @@ export default {
 
     connection?.destroy()
     server.clearQueue(interaction.guildId)
-    return await interaction.reply({ embeds: [leaveEmbed] })
+    return interaction.reply({ embeds: [leaveEmbed] })
   }
 }

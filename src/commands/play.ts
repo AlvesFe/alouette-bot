@@ -27,7 +27,7 @@ export default {
     const textChannel = interaction.channel
     const serverInfo = serversInfo.getServerInfo(interaction.guild.id)
     if (!voiceChannel) {
-      return await interaction.reply({
+      return interaction.reply({
         content: 'Você precisa estar em um canal de voz para executar este comando!',
         ephemeral: true
       })
@@ -35,7 +35,7 @@ export default {
 
     const music = interaction.options.getString('música')
     if (!music) {
-      return await interaction.reply({
+      return interaction.reply({
         content: 'Você precisa informar o nome da música a ser tocada!',
         ephemeral: true
       })
@@ -43,7 +43,7 @@ export default {
 
     const searchResult = await searchService.search(music)
     if (!searchResult) {
-      return await interaction.reply({
+      return interaction.reply({
         content: 'Não foi possível encontrar a música informada!',
         ephemeral: true
       })
@@ -96,13 +96,13 @@ export default {
         await audioPlayer.play(serversInfo.getQueue(interaction.guild.id)[0])
       }
 
-      return await interaction.reply({
+      return interaction.reply({
         embeds: [playlistEmbed]
       })
     }
 
     if (!searchResult.video) {
-      return await interaction.reply({
+      return interaction.reply({
         content: 'Não foi possível encontrar a música informada!',
         ephemeral: true
       })
@@ -137,7 +137,7 @@ export default {
       await audioPlayer.play(serversInfo.getQueue(interaction.guild.id)[0])
     }
 
-    return await interaction.reply({
+    return interaction.reply({
       embeds: [songEmbed]
     })
   }
