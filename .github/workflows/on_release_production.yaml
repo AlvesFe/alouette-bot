@@ -17,6 +17,9 @@ jobs:
       - name: install dependencies
         shell: bash
         run: npm install
+      - name: build
+        shell: bash
+        run: npm run build
       - name: create config
         uses: ./.github/actions/create_config
         with:
