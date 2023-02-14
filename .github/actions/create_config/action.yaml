@@ -27,9 +27,8 @@ inputs:
     required: true
 
 runs:
+  using: composite
   steps:
-    - name: checkout
-      uses: actions/checkout@v2
     - name: create config
       shell: bash
       run: |
