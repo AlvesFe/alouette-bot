@@ -1,0 +1,41 @@
+name: Create config
+description: Create discloud.config
+inputs:
+  name:
+    description: Bot name
+    required: true
+  avatar:
+    description: Bot avatar
+    required: true
+  type:
+    description: Bot type
+    required: true
+  main:
+    description: Bot main file
+    required: true
+  ram:
+    description: Bot ram
+    required: true
+  autorestart:
+    description: Bot autorestart
+    required: true
+  version:
+    description: Bot version
+    required: true
+  apt:
+    description: Bot apt
+    required: true
+
+runs:
+  steps:
+    - name: create config
+      shell: bash
+      run: |
+        echo "NAME=${{ inputs.name }}" > discloud.config
+        echo "AVATAR=${{ inputs.avatar }}" >> discloud.config
+        echo "TYPE=${{ inputs.type }}" >> discloud.config
+        echo "MAIN=${{ inputs.main }}" >> discloud.config
+        echo "RAM=${{ inputs.ram }}" >> discloud.config
+        echo "AUTORESTART=${{ inputs.autorestart }}" >> discloud.config
+        echo "VERSION=${{ inputs.version }}" >> discloud.config
+        echo "APT=${{ inputs.apt }}" >> discloud.config
