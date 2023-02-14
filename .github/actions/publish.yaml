@@ -1,0 +1,21 @@
+name: Publish
+description: Publish the bot to Discloud
+inputs:
+  token:
+    description: Discloud token
+    required: true
+  app_id:
+    description: Discloud app id
+    required: true
+
+runs:
+  steps:
+    - name: install discloud
+      shell: bash
+      run: npm install -g discloud-cli
+    - name: login
+      shell: bash
+      run: echo ${{ inputs.token }} | discloud login
+    - name: publish
+      shell: bash
+      run: discloud commit ${{ inputs.app_id }}
