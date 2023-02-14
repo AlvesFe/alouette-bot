@@ -2,7 +2,7 @@ import Spotify from 'spotify-web-api-node'
 const { SPOTIFY_CLIENT_ID, SPOTIFY_SECRET } = process.env
 
 class SpotifyService {
-  client = new Spotify({
+  private readonly client = new Spotify({
     clientId: SPOTIFY_CLIENT_ID,
     clientSecret: SPOTIFY_SECRET
   })
