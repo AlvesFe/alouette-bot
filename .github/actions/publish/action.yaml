@@ -9,6 +9,7 @@ inputs:
     required: true
 
 runs:
+  using: composite
   steps:
     - name: install discloud
       shell: bash

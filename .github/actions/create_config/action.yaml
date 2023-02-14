@@ -27,6 +27,7 @@ inputs:
     required: true
 
 runs:
+  using: composite
   steps:
     - name: create config
       shell: bash
