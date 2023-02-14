@@ -19,4 +19,4 @@ runs:
       run: echo ${{ inputs.token }} | discloud login
     - name: publish
       shell: bash
-      run: discloud commit ${{ inputs.app_id }}
+      run: echo ${{ inputs.app_id }} | discloud commit
