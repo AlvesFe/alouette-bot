@@ -10,7 +10,7 @@ export default {
     if (!interaction.isChatInputCommand()) return
     if (!CLIENT_ID) throw new Error('CLIENT_ID is not defined in .env file.')
     console.log(`${interaction.user.tag} in #${interaction?.channel?.name} triggered an interaction.`)
-    const command: Command = interaction?.client?.commands?.get(interaction.commandName)
+    const command = interaction?.client?.commands?.get(interaction.commandName) as Command
     if (!command) return
     const server = serversInfo.getServerInfo(interaction.guild.id)
     try {
@@ -20,7 +20,7 @@ export default {
       command.execute(interaction, user, serversInfo)
     } catch (error) {
       console.error(error)
-      return await interaction.reply({
+      return interaction.reply({
         content: 'Houve um problema ao executar esse comando.',
         ephemeral: true
       })

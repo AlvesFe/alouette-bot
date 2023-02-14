@@ -57,7 +57,7 @@ class DiscordService {
       if (event.default.once) {
         this.client.once(event.default.name, (...args) => event.default.execute(...args))
       } else {
-        this.client.on(event.default.name, (...args) => event.default.execute(...args, serversInfo))
+        this.client.on(event.default.name, (...args) => event.default.execute(...args, serversInfo, this.client))
       }
     }
   }
@@ -66,7 +66,7 @@ class DiscordService {
     if (!TOKEN) {
       throw new Error('No token provided.')
     }
-    return await this.client.login(TOKEN)
+    return this.client.login(TOKEN)
   }
 
   async registerCommands(): Promise<void> {

@@ -12,11 +12,11 @@ class SearchService {
       const url = parseUrl(query)
       const searchEngine = this.defineSearchEngine(url)
       switch (searchEngine) {
-        case SearchEngine.SPOTIFY:
-          return await this.searchSpotify(url)
-        case SearchEngine.YTB:
-        default:
-          return await this.searchYtb(query, url)
+      case SearchEngine.SPOTIFY:
+        return await this.searchSpotify(url)
+      case SearchEngine.YTB:
+      default:
+        return await this.searchYtb(query, url)
       }
     } catch (error) {
       errorMetric({
@@ -157,16 +157,16 @@ class SearchService {
       return SearchEngine.YTB
     }
     switch (url?.hostname) {
-      case 'open.spotify.com':
-      case 'play.spotify.com':
-      case 'spotify.com':
-        return SearchEngine.SPOTIFY
-      case 'music.youtube.com':
-      case 'www.youtube.com':
-      case 'youtube.com':
-      case 'youtu.be':
-      default:
-        return SearchEngine.YTB
+    case 'open.spotify.com':
+    case 'play.spotify.com':
+    case 'spotify.com':
+      return SearchEngine.SPOTIFY
+    case 'music.youtube.com':
+    case 'www.youtube.com':
+    case 'youtube.com':
+    case 'youtu.be':
+    default:
+      return SearchEngine.YTB
     }
   }
 }

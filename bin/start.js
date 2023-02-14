@@ -1,3 +1,3 @@
-const shell = require('shelljs');
+const shell = require('shelljs')
 
-shell.exec('rm -rf dist && yarn start');
+shell.exec('rm -rf dist && yarn start')
