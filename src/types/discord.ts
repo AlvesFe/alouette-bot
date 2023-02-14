@@ -3,6 +3,7 @@ import ServerService from '../services/server.service'
 
 interface DefaultEvent {
   name: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   execute: (...args: any) => void
   once?: boolean
 }
@@ -11,7 +12,7 @@ export interface Event {
 }
 
 export interface CustomClient extends Client<true> {
-  commands?: Collection<string, any>
+  commands?: Collection<string, unknown>
 }
 
 export interface DefaultCommand {

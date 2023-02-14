@@ -10,7 +10,7 @@ export default {
   async execute(interaction: CustomInteraction, user: GuildMember, serversInfo: ServerService) {
     const serverInfo = serversInfo.getServerInfo(interaction.guild.id)
     if (!serverInfo?.queue || serverInfo.queue.length === 0) {
-      return await interaction.reply({
+      return interaction.reply({
         content: 'Não foi possível encontrar a fila de músicas!',
         ephemeral: true
       })
@@ -28,7 +28,7 @@ export default {
       botName: serverInfo?.bot.username
     })
 
-    return await interaction.reply({
+    return interaction.reply({
       embeds: [shuffledQueueEmbed]
     })
   }

@@ -14,14 +14,24 @@ import {
   VoiceConnectionStatus
 } from '@discordjs/voice'
 import { SearchEngine } from '../types/search'
+import errorMetric from '../factory/errorMessage'
+
+const DEFAULT_IDLE_TIME_SECONDS = 10
+const { BOT_COLOR, IDLE_TIME_SECONDS } = process.env
 
 class AudioService {
-  player: AudioPlayer = createAudioPlayer()
-  connection: VoiceConnection | undefined
+  private connection: VoiceConnection | undefined
+  private readonly player: AudioPlayer = createAudioPlayer()
+  private readonly channel: GuildTextBasedChannel
+  private readonly idleTime: number =
+    IDLE_TIME_SECONDS
+      ? parseInt(IDLE_TIME_SECONDS)
+      : DEFAULT_IDLE_TIME_SECONDS
 
   constructor(channel: GuildTextBasedChannel, server: ServerService) {
+    this.channel = channel
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    this.player.on(AudioPlayerStatus.Idle, async () => await this.handleIdle(server, channel))
+    this.player.on(AudioPlayerStatus.Idle, async () => this.handleIdle(server, channel))
     this.player.on(AudioPlayerStatus.AutoPaused, () => this.handleDisconnect(server, channel))
   }
 
@@ -50,39 +60,52 @@ class AudioService {
   }
 
   async play({ videoInfo }: Music): Promise<void> {
-    if (videoInfo.origin === SearchEngine.SPOTIFY) {
-      const video = await ytbService.getVideo(`${videoInfo.author} ${videoInfo.title}`).catch(() => {
-        console.error(`Audioservice failed to play ${videoInfo.title}, skipping...`)
-        this.player.stop()
+    try {
+      if (videoInfo.origin === SearchEngine.SPOTIFY) {
+        const video = await ytbService.getVideo(`${videoInfo.author} ${videoInfo.title}`).catch(() => {
+          console.error(`Audioservice failed to play ${videoInfo.title}, skipping...`)
+          this.player.stop()
+        })
+        if (!video) return
+        if (!videoInfo.thumbnail) videoInfo.thumbnail = video.bestThumbnail.url
+        videoInfo.url = video.url
+      }
+      const url = videoInfo.url
+      const video = await ytbService.getAudioStream(url)
+      const audioStream = createAudioResource(video)
+      this.player.play(audioStream)
+    } catch (error) {
+      this.player.stop()
+      await this.channel.send({
+        content: `Não foi possível tocar a música **${videoInfo.title}** pulando...`
       })
-      if (!video) return
-      if (!videoInfo.thumbnail) videoInfo.thumbnail = video.bestThumbnail.url
-      videoInfo.url = video.url
+      errorMetric({
+        message: 'Could not play audio',
+        error,
+        data: {
+          videoInfo
+        }
+      })
     }
-    const url = videoInfo.url
-    const video = await ytbService.getAudioStream(url)
-    const audioStream = createAudioResource(video)
-    this.player.play(audioStream)
   }
 
   async handleIdle(server: ServerService, channel: GuildTextBasedChannel): Promise<void> {
     const queue = (): Music[] => server.getQueue(channel.guildId)
     server.advanceSong(channel.guildId)
-    if (queue().length === 0) {
-      this.player.stop()
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      setTimeout(async () => {
-        if (queue().length === 0) {
-          this.leaveChannel()
-          const inactiveEmbed = this.createInactiveEmbed(server, channel)
-          await channel.send({ embeds: [inactiveEmbed] })
-        }
-      }, 10000)
-    } else {
+    if (queue().length > 0) {
       await this.play(queue()[0])
       const playingEmbed = this.createPlayingEmbed(server, channel, queue()[0])
       await channel.send({ embeds: [playingEmbed] })
+      return
     }
+    this.player.stop()
+    setTimeout(() => {
+      if (queue().length === 0) {
+        this.leaveChannel()
+        const inactiveEmbed = this.createInactiveEmbed(server, channel)
+        void channel.send({ embeds: [inactiveEmbed] })
+      }
+    }, this.idleTime * 1000)
   }
 
   private createInactiveEmbed(server: ServerService, channel: GuildTextBasedChannel): EmbedBuilder {
@@ -93,7 +116,7 @@ class AudioService {
       botAvatar,
       botName,
       description: 'Saindo do canal de voz por inatividade',
-      color: process.env.BOT_COLOR as ColorResolvable,
+      color: BOT_COLOR as ColorResolvable,
       footer: {
         text: 'Desconectado'
       }
@@ -108,7 +131,7 @@ class AudioService {
       botAvatar,
       botName,
       description: `**[${music.videoInfo.title}](${music.videoInfo.url}})**`,
-      color: process.env.BOT_COLOR as ColorResolvable,
+      color: BOT_COLOR as ColorResolvable,
       footer: {
         text: 'Tocando'
       },

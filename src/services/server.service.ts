@@ -2,46 +2,46 @@ import { User } from 'discord.js'
 import { Music, ServerInfo, ServerInfoItem } from '../types/server'
 
 class ServerService {
-  private server: ServerInfo = {}
+  private readonly server: ServerInfo = new Map()
 
   addServer(serverId: string, bot: User): void {
-    this.server[serverId] = {
+    this.server.set(serverId, {
       serverId,
       queue: [],
       bot
-    }
+    })
   }
 
   getServerInfo(serverId: string): ServerInfoItem | null {
-    try {
-      return this.server[serverId]
-    } catch {
-      return null
-    }
+    return this.server.get(serverId) || null
   }
 
   addSong(serverId: string, song: Music): void {
-    this.server[serverId].queue.push(song)
+    this.server.get(serverId)?.queue.push(song)
   }
 
   getQueue(serverId: string): Music[] {
-    return this.server[serverId].queue
+    return this.server.get(serverId)?.queue || []
   }
 
   advanceSong(serverId: string): void {
-    this.server[serverId].queue.shift()
+    this.server.get(serverId)?.queue.shift()
   }
 
   clearQueue(serverId: string): void {
-    this.server[serverId].queue = []
+    const server = this.server.get(serverId)
+    if (server) server.queue = []
   }
 
   shuffleQueue(serverId: string): void {
-    const queue = this.server[serverId].queue
+    const queue = this.server.get(serverId)?.queue || []
+    if (queue.length <= 1) return
     const firstMusic = queue.length > 0 ? queue.shift() : null
     const newQueue = queue.sort(() => Math.random() - 0.5)
-    if (firstMusic) newQueue.unshift(firstMusic)
-    this.server[serverId].queue = newQueue
+    if (firstMusic) {
+      newQueue.unshift(firstMusic)
+    }
+    (this.server.get(serverId) as ServerInfoItem).queue = newQueue
   }
 }
 

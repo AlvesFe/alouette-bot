@@ -21,11 +21,11 @@ class DiscordService {
         GatewayIntentBits.GuildVoiceStates
       ]
     })
-    this.getCommands()
-    this.getEvents()
+    void this.getCommands()
+    void this.getEvents()
   }
 
-  getCommands(): void {
+  async getCommands(): Promise<void> {
     console.info('Loading commands...')
     const commandFiles = fs
       .readdirSync('./src/commands')
@@ -37,13 +37,12 @@ class DiscordService {
     this.client.commands = new Collection()
 
     for (const file of commandFiles) {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const command: Command = require(`../commands/${file}`)
+      const command: Command = await import(`../commands/${file}`)
       this.client.commands.set(command.default.data.name, command.default)
     }
   }
 
-  getEvents(): void {
+  async getEvents(): Promise<void> {
     console.info('Loading events...')
     const serversInfo = new ServerService()
     const eventFiles = fs
@@ -54,12 +53,11 @@ class DiscordService {
       .map(file => file.split('.')[0])
 
     for (const file of eventFiles) {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const event: Event = require(`../events/${file}`)
+      const event: Event = await import(`../events/${file}`)
       if (event.default.once) {
         this.client.once(event.default.name, (...args) => event.default.execute(...args))
       } else {
-        this.client.on(event.default.name, (...args) => event.default.execute(...args, serversInfo))
+        this.client.on(event.default.name, (...args) => event.default.execute(...args, serversInfo, this.client))
       }
     }
   }
@@ -68,7 +66,7 @@ class DiscordService {
     if (!TOKEN) {
       throw new Error('No token provided.')
     }
-    return await this.client.login(TOKEN)
+    return this.client.login(TOKEN)
   }
 
   async registerCommands(): Promise<void> {
@@ -88,8 +86,7 @@ class DiscordService {
     const rest = new REST({ version: '10' }).setToken(TOKEN)
 
     for (const file of commandFiles) {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const command: Command = require(`../commands/${file}`)
+      const command: Command = await import(`../commands/${file}`)
       commands.push(command.default.data.toJSON())
     }
 
