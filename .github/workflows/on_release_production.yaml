@@ -54,6 +54,7 @@ jobs:
           spotify_client_id: ${{ secrets.SPOTIFY_CLIENT_ID }}
           spotify_secret: ${{ secrets.SPOTIFY_SECRET }}
           idle_time_seconds: ${{ secrets.IDLE_TIME_SECONDS }}
+          env: production
   publish:
     name: Publish
     runs-on: ubuntu-latest

@@ -23,6 +23,10 @@ inputs:
     description: Idle time in seconds
     required: false
     default: 10
+  env:
+    description: Environment
+    required: false
+    default: production
 
 runs:
   steps:
@@ -35,3 +39,5 @@ runs:
         echo "BOT_COLOR=${{ inputs.bot_color }}" >> .env
         echo "SPOTIFY_CLIENT_ID=${{ inputs.spotify_client_id }}" >> .env
         echo "SPOTIFY_SECRET=${{ inputs.spotify_secret }}" >> .env
+        echo "IDLE_TIME_SECONDS=${{ inputs.idle_time_seconds }}" >> .env
+        echo "NODE_ENV=${{ inputs.env }}" >> .env
