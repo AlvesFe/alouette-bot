@@ -10,12 +10,6 @@ inputs:
 
 runs:
   steps:
-    - name: checkout
-      uses: actions/checkout@v2
-    - name: setup node
-      uses: actions/setup-node@v1
-      with:
-        node-version: 16.16.0
     - name: install discloud
       shell: bash
       run: npm install -g discloud-cli

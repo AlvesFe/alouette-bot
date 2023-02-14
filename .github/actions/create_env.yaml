@@ -30,8 +30,6 @@ inputs:
 
 runs:
   steps:
-    - name: checkout
-      uses: actions/checkout@v2
     - name: create .env file
       shell: bash
       run: |
