@@ -1,0 +1,43 @@
+name: Create .env file
+description: Create .env file
+inputs:
+  token:
+    description: Bot token
+    required: true
+  client_id:
+    description: Bot client id
+    required: true
+  guild_id:
+    description: Bot guild id
+    required: true
+  bot_color:
+    description: Bot color
+    required: true
+  spotify_client_id:
+    description: Spotify client id
+    required: true
+  spotify_secret:
+    description: Spotify secret
+    required: true
+  idle_time_seconds:
+    description: Idle time in seconds
+    required: false
+    default: 10
+  env:
+    description: Environment
+    required: false
+    default: production
+
+runs:
+  steps:
+    - name: create .env file
+      shell: bash
+      run: |
+        echo "TOKEN=${{ inputs.token }}" > .env
+        echo "CLIENT_ID=${{ inputs.client_id }}" >> .env
+        echo "GUILD_ID=${{ inputs.guild_id }}" >> .env
+        echo "BOT_COLOR=${{ inputs.bot_color }}" >> .env
+        echo "SPOTIFY_CLIENT_ID=${{ inputs.spotify_client_id }}" >> .env
+        echo "SPOTIFY_SECRET=${{ inputs.spotify_secret }}" >> .env
+        echo "IDLE_TIME_SECONDS=${{ inputs.idle_time_seconds }}" >> .env
+        echo "NODE_ENV=${{ inputs.env }}" >> .env
