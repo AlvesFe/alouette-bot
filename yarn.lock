@@ -1938,9 +1938,8 @@ ytpl@^2.3.0:
   dependencies:
     miniget "^4.2.2"
 
-ytsr@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/ytsr/-/ytsr-3.8.0.tgz#49a8e5dc413f41515fc3d79d93ee3e073d10e772"
-  integrity sha512-R+RfYXvBBMAr2e4OxrQ5SBv5x/Mdhmcj1Q8TH0f2HK5d2jbhHOtK4BdzPvLriA6MDoMwqqX04GD8Rpf9UNtSTg==
+ytsr@Yonle/node-ytsr:
+  version "0.0.0-development"
+  resolved "https://codeload.github.com/Yonle/node-ytsr/tar.gz/d2f0342141d3d185cde745645b7f1e3840eb2322"
   dependencies:
     miniget "^4.2.2"
