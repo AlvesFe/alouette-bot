@@ -99,13 +99,20 @@ class AudioService {
       return
     }
     this.player.stop()
-    setTimeout(() => {
-      if (queue().length === 0) {
-        this.leaveChannel()
-        const inactiveEmbed = this.createInactiveEmbed(server, channel)
-        void channel.send({ embeds: [inactiveEmbed] })
+    this.queueChangeListener(server, channel)
+  }
+
+  queueChangeListener(server: ServerService, channel: GuildTextBasedChannel): void {
+    const interval = setInterval(() => {
+      const queue = server.getQueue(channel.guildId)
+      if (queue.length > 0) {
+        this.play(queue[0])
+        const playingEmbed = this.createPlayingEmbed(server, channel, queue[0])
+        clearInterval(interval)
+        void channel.send({ embeds: [playingEmbed] })
       }
-    }, this.idleTime * 1000)
+    }, 1000)
+    setTimeout(() => clearInterval(interval), this.idleTime * 1000)
   }
 
   private createInactiveEmbed(server: ServerService, channel: GuildTextBasedChannel): EmbedBuilder {
