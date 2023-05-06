@@ -112,7 +112,13 @@ class AudioService {
         void channel.send({ embeds: [playingEmbed] })
       }
     }, 1000)
-    setTimeout(() => clearInterval(interval), this.idleTime * 1000)
+    setTimeout(() => {
+      clearInterval(interval)
+      this.leaveChannel()
+      server.clearQueue(channel.guildId)
+      const inactiveEmbed = this.createInactiveEmbed(server, channel)
+      void channel.send({ embeds: [inactiveEmbed] })
+    }, this.idleTime * 1000)
   }
 
   private createInactiveEmbed(server: ServerService, channel: GuildTextBasedChannel): EmbedBuilder {
