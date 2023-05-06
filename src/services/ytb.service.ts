@@ -1,5 +1,5 @@
 import internal from 'stream'
-import { exec } from 'youtube-dl-exec'
+import ytdl from 'ytdl-core'
 import ytpl from 'ytpl'
 import ytsr from 'ytsr'
 
@@ -18,25 +18,11 @@ class YtbService {
   }
 
   async getAudioStream(url: string): Promise<internal.Readable> {
-    const stream = exec(
-      url,
-      {
-        output: '-',
-        format: 'bestaudio',
-        limitRate: '1M',
-        rmCacheDir: true,
-        verbose: true,
-      },
-      {
-        stdio: ['ignore', 'pipe', 'pipe']
-      }
-    )
-    stream.unref()
-    stream.on('error', (error) => {
-      console.error('Error on stream', error)
-    })
-    if (!stream.stdout) throw new Error('No stream')
-    return stream.stdout
+    return ytdl(url, {
+      filter: 'audioonly',
+      quality: 'highestaudio',
+      highWaterMark: 1048576 * 32
+    }).on('error', console.error)
   }
 }
 
